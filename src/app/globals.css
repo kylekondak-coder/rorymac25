@@ -1,26 +1,201 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Botanical / paper palette */
+  --paper: #faf6ec;
+  --paper-raised: #f2ecdc;
+  --ink: #23301f;
+  --ink-soft: #4b5843;
+
+  --green-50: #eef3e6;
+  --green-100: #d7e3c6;
+  --green-300: #9db482;
+  --green-500: #4c7a41;
+  --green-600: #3a5f33;
+  --green-700: #2c4a28;
+  --green-900: #1a2e18;
+
+  --status-ok: #3f7a4e;
+  --status-ok-bg: #e4efe1;
+  --status-warning: #b8791a;
+  --status-warning-bg: #f6ecd6;
+  --status-expired: #a3352a;
+  --status-expired-bg: #f3e0dc;
+  --status-missing: #6b6b60;
+  --status-missing-bg: #eae7dc;
+
+  --border: #ddd4bc;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-green-50: var(--green-50);
+  --color-green-100: var(--green-100);
+  --color-green-300: var(--green-300);
+  --color-green-500: var(--green-500);
+  --color-green-600: var(--green-600);
+  --color-green-700: var(--green-700);
+  --color-green-900: var(--green-900);
+
+  --color-status-ok: var(--status-ok);
+  --color-status-ok-bg: var(--status-ok-bg);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-expired: var(--status-expired);
+  --color-status-expired-bg: var(--status-expired-bg);
+  --color-status-missing: var(--status-missing);
+  --color-status-missing-bg: var(--status-missing-bg);
+
+  --color-border: var(--border);
+
+  --font-serif: var(--font-fraunces);
+  --font-sans: var(--font-public-sans);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-fraunces);
+}
+
+/* Stamp-style status badge: rubber-stamp look, double border, letterspaced mono */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-family: var(--font-jetbrains-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.28em 0.65em;
+  border-radius: 3px;
+  border: 1.5px solid currentColor;
+  box-shadow: inset 0 0 0 2px currentColor;
+  outline: 2px solid transparent;
+  outline-offset: -4px;
+  transform: rotate(-1.5deg);
+  white-space: nowrap;
+}
+
+.stamp-ok {
+  color: var(--status-ok);
+  background: var(--status-ok-bg);
+}
+.stamp-warning {
+  color: var(--status-warning);
+  background: var(--status-warning-bg);
+}
+.stamp-expired {
+  color: var(--status-expired);
+  background: var(--status-expired-bg);
+}
+.stamp-missing {
+  color: var(--status-missing);
+  background: var(--status-missing-bg);
+}
+
+/* Shared form / layout primitives */
+.field-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.3rem;
+}
+
+.field-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-public-sans);
+  font-size: 0.9rem;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--green-500);
+  box-shadow: 0 0 0 2px var(--green-100);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.btn-primary {
+  background: var(--green-600);
+  color: var(--paper);
+}
+.btn-primary:hover {
+  background: var(--green-700);
+}
+
+.btn-secondary {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--ink);
+}
+.btn-secondary:hover {
+  background: var(--paper-raised);
+}
+
+.btn-danger {
+  background: transparent;
+  border-color: var(--status-expired);
+  color: var(--status-expired);
+}
+.btn-danger:hover {
+  background: var(--status-expired-bg);
+}
+
+.card {
+  background: var(--paper-raised);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.error-banner {
+  background: var(--status-expired-bg);
+  color: var(--status-expired);
+  border: 1px solid var(--status-expired);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.notice-banner {
+  background: var(--green-50);
+  color: var(--green-700);
+  border: 1px solid var(--green-300);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
 }

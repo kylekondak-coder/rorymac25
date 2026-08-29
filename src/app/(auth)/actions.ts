@@ -1,0 +1,50 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+
+export async function login(formData: FormData) {
+  const email = String(formData.get("email") ?? "");
+  const password = String(formData.get("password") ?? "");
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    redirect(`/login?error=${encodeURIComponent(error.message)}`);
+  }
+
+  redirect("/buildings");
+}
+
+export async function signup(formData: FormData) {
+  const email = String(formData.get("email") ?? "");
+  const password = String(formData.get("password") ?? "");
+  const fullName = String(formData.get("full_name") ?? "");
+  const organisationName = String(formData.get("organisation_name") ?? "");
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { full_name: fullName, organisation_name: organisationName },
+    },
+  });
+
+  if (error) {
+    redirect(`/signup?error=${encodeURIComponent(error.message)}`);
+  }
+
+  if (!data.session) {
+    redirect("/login?notice=Check your email to confirm your account, then log in.");
+  }
+
+  redirect("/buildings");
+}
+
+export async function logout() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  redirect("/login");
+}
