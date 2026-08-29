@@ -9,6 +9,7 @@ import { CertificatesSection } from "@/components/building/CertificatesSection";
 import { AssetsSection } from "@/components/building/AssetsSection";
 import { RiskAssessmentsSection } from "@/components/building/RiskAssessmentsSection";
 import { DefectsSection } from "@/components/building/DefectsSection";
+import { ClientLinkSection } from "@/components/building/ClientLinkSection";
 
 export default async function BuildingDetailPage({
   params,
@@ -60,6 +61,7 @@ export default async function BuildingDetailPage({
       </div>
 
       <div className="flex flex-col gap-6">
+        <ClientLinkSection buildingId={building.id} shareToken={building.share_token} />
         <CertificatesSection buildingId={building.id} certificates={building.certificates} />
         <RiskAssessmentsSection
           buildingId={building.id}

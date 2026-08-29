@@ -62,3 +62,15 @@ export async function deleteBuilding(id: string) {
   revalidatePath("/buildings");
   redirect("/buildings");
 }
+
+/** Invalidates the current client share link (e.g. if it's leaked) and issues a new one. */
+export async function regenerateShareLink(id: string) {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("buildings")
+    .update({ share_token: crypto.randomUUID() })
+    .eq("id", id);
+
+  if (error) throw new Error(error.message);
+  revalidatePath(`/buildings/${id}`);
+}

@@ -29,3 +29,18 @@ export async function getBuildingWithRelations(
   if (error) throw new Error(error.message);
   return data as unknown as BuildingWithRelations | null;
 }
+
+/** For the public client share page — looked up by the unguessable share token. */
+export async function getBuildingByShareToken(
+  supabase: SupabaseClient,
+  token: string,
+): Promise<BuildingWithRelations | null> {
+  const { data, error } = await supabase
+    .from("buildings")
+    .select(BUILDING_WITH_RELATIONS_SELECT)
+    .eq("share_token", token)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return data as unknown as BuildingWithRelations | null;
+}

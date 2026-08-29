@@ -21,6 +21,7 @@ export interface Building {
   name: string;
   address: string | null;
   client_contact_email: string | null;
+  share_token: string;
   created_at: string;
 }
 
