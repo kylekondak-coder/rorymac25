@@ -1,4 +1,5 @@
 import type { Asset } from "@/lib/types";
+import { ASSET_TYPES } from "@/lib/assetTypes";
 import { createAsset, updateAsset, deleteAsset } from "@/lib/actions/assets";
 
 export function AssetsSection({
@@ -13,6 +14,12 @@ export function AssetsSection({
   return (
     <section className="card p-5">
       <h2 className="font-serif text-xl mb-4">Assets</h2>
+
+      <datalist id="asset-types">
+        {ASSET_TYPES.map((t) => (
+          <option key={t} value={t} />
+        ))}
+      </datalist>
 
       <div className="flex flex-col gap-3 mb-5">
         {assets.map((asset) => {
@@ -29,6 +36,7 @@ export function AssetsSection({
                   <input
                     className="field-input"
                     name="type"
+                    list="asset-types"
                     defaultValue={asset.type}
                     required
                   />
@@ -70,7 +78,13 @@ export function AssetsSection({
       <form action={create} className="flex flex-wrap items-end gap-3 pt-4 border-t border-border">
         <div className="flex-1 min-w-[10rem]">
           <label className="field-label">New asset type</label>
-          <input className="field-input" name="type" placeholder="Fire Extinguisher" required />
+          <input
+            className="field-input"
+            name="type"
+            list="asset-types"
+            placeholder="Fire Extinguisher — CO2"
+            required
+          />
         </div>
         <div className="flex-1 min-w-[10rem]">
           <label className="field-label">Location</label>
