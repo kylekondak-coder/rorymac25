@@ -1,6 +1,7 @@
 import type { Certificate } from "@/lib/types";
 import { statusFromDate } from "@/lib/status";
 import { StatusBadge } from "@/components/StatusBadge";
+import { CERTIFICATE_TYPES } from "@/lib/certificateTypes";
 import {
   createCertificate,
   updateCertificate,
@@ -20,6 +21,12 @@ export function CertificatesSection({
     <section className="card p-5">
       <h2 className="font-serif text-xl mb-4">Certificates</h2>
 
+      <datalist id="certificate-types">
+        {CERTIFICATE_TYPES.map((t) => (
+          <option key={t} value={t} />
+        ))}
+      </datalist>
+
       <div className="flex flex-col gap-3 mb-5">
         {certificates.map((cert) => {
           const update = updateCertificate.bind(null, buildingId, cert.id);
@@ -35,6 +42,7 @@ export function CertificatesSection({
                   <input
                     className="field-input"
                     name="type"
+                    list="certificate-types"
                     defaultValue={cert.type}
                     required
                   />
@@ -78,7 +86,13 @@ export function CertificatesSection({
       <form action={create} className="flex flex-wrap items-end gap-3 pt-4 border-t border-border">
         <div className="flex-1 min-w-[10rem]">
           <label className="field-label">New certificate type</label>
-          <input className="field-input" name="type" placeholder="Fire Alarm Service" required />
+          <input
+            className="field-input"
+            name="type"
+            list="certificate-types"
+            placeholder="Fire Alarm System (BS 5839-1)"
+            required
+          />
         </div>
         <div>
           <label className="field-label">Issued</label>
