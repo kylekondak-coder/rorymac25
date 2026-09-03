@@ -2,13 +2,15 @@ import type { Certificate } from "@/lib/types";
 import { statusFromDate } from "@/lib/status";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CERTIFICATE_TYPES } from "@/lib/certificateTypes";
+import { createClient } from "@/lib/supabase/server";
+import { getCertificateFileUrls } from "@/lib/storage";
 import {
   createCertificate,
   updateCertificate,
   deleteCertificate,
 } from "@/lib/actions/certificates";
 
-export function CertificatesSection({
+export async function CertificatesSection({
   buildingId,
   certificates,
 }: {
@@ -16,6 +18,8 @@ export function CertificatesSection({
   certificates: Certificate[];
 }) {
   const create = createCertificate.bind(null, buildingId);
+  const supabase = await createClient();
+  const fileUrls = await getCertificateFileUrls(supabase, certificates);
 
   return (
     <section className="card p-5">
@@ -31,12 +35,13 @@ export function CertificatesSection({
         {certificates.map((cert) => {
           const update = updateCertificate.bind(null, buildingId, cert.id);
           const remove = deleteCertificate.bind(null, buildingId, cert.id);
+          const fileUrl = fileUrls.get(cert.id);
           return (
             <div
               key={cert.id}
-              className="flex flex-wrap items-end gap-3 border border-border rounded-md p-3"
+              className="flex flex-col gap-2 border border-border rounded-md p-3"
             >
-              <form action={update} className="flex flex-wrap items-end gap-3 flex-1">
+              <form action={update} className="flex flex-wrap items-end gap-3">
                 <div className="flex-1 min-w-[10rem]">
                   <label className="field-label">Type</label>
                   <input
@@ -65,16 +70,39 @@ export function CertificatesSection({
                     defaultValue={cert.expiry_date ?? ""}
                   />
                 </div>
+                <div className="flex-1 min-w-[10rem]">
+                  <label className="field-label">
+                    {cert.file_path ? "Replace file" : "Upload file"}
+                  </label>
+                  <input
+                    className="field-input"
+                    type="file"
+                    name="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                  />
+                </div>
                 <button type="submit" className="btn btn-secondary">
                   Save
                 </button>
+                <StatusBadge status={statusFromDate(cert.expiry_date)} />
               </form>
-              <StatusBadge status={statusFromDate(cert.expiry_date)} />
-              <form action={remove}>
-                <button type="submit" className="btn btn-danger">
-                  Delete
-                </button>
-              </form>
+              <div className="flex items-center gap-3">
+                {fileUrl && (
+                  <a
+                    href={fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-secondary !text-xs"
+                  >
+                    View certificate ↗
+                  </a>
+                )}
+                <form action={remove}>
+                  <button type="submit" className="btn btn-danger !text-xs">
+                    Delete
+                  </button>
+                </form>
+              </div>
             </div>
           );
         })}
@@ -83,7 +111,10 @@ export function CertificatesSection({
         )}
       </div>
 
-      <form action={create} className="flex flex-wrap items-end gap-3 pt-4 border-t border-border">
+      <form
+        action={create}
+        className="flex flex-wrap items-end gap-3 pt-4 border-t border-border"
+      >
         <div className="flex-1 min-w-[10rem]">
           <label className="field-label">New certificate type</label>
           <input
@@ -101,6 +132,10 @@ export function CertificatesSection({
         <div>
           <label className="field-label">Expires</label>
           <input className="field-input" type="date" name="expiry_date" />
+        </div>
+        <div className="flex-1 min-w-[10rem]">
+          <label className="field-label">File (optional)</label>
+          <input className="field-input" type="file" name="file" accept=".pdf,.jpg,.jpeg,.png" />
         </div>
         <button type="submit" className="btn btn-primary">
           Add

@@ -40,6 +40,7 @@ export interface Certificate {
   type: string;
   issue_date: string | null;
   expiry_date: string | null;
+  file_path: string | null;
   created_at: string;
 }
 

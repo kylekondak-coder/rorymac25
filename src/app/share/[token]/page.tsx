@@ -8,6 +8,7 @@ import {
 } from "@/lib/status";
 import { StatusBadge } from "@/components/StatusBadge";
 import { RadialDial } from "@/components/RadialDial";
+import { getCertificateFileUrls } from "@/lib/storage";
 
 const SEVERITY_CLASS: Record<string, string> = {
   low: "bg-status-ok-bg text-status-ok",
@@ -33,6 +34,7 @@ export default async function SharePage({
   const openDefects = building.defects
     .filter((d) => d.status === "open")
     .sort((a, b) => b.date_raised.localeCompare(a.date_raised));
+  const fileUrls = await getCertificateFileUrls(supabase, building.certificates);
 
   return (
     <div className="min-h-screen">
@@ -73,6 +75,16 @@ export default async function SharePage({
                 >
                   <span className="text-sm font-medium">{cert.type}</span>
                   <div className="flex items-center gap-3">
+                    {fileUrls.get(cert.id) && (
+                      <a
+                        href={fileUrls.get(cert.id)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-green-700 font-semibold"
+                      >
+                        View ↗
+                      </a>
+                    )}
                     <span className="font-mono text-xs text-ink-soft">
                       {cert.expiry_date ?? "no date set"}
                     </span>
