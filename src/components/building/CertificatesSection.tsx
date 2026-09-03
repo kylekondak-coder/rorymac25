@@ -41,8 +41,8 @@ export async function CertificatesSection({
               key={cert.id}
               className="flex flex-col gap-2 border border-border rounded-md p-3"
             >
-              <form action={update} className="flex flex-wrap items-end gap-3">
-                <div className="flex-1 min-w-[10rem]">
+              <form action={update} className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-3">
+                <div className="w-full sm:flex-1 sm:min-w-[10rem]">
                   <label className="field-label">Type</label>
                   <input
                     className="field-input"
@@ -52,7 +52,7 @@ export async function CertificatesSection({
                     required
                   />
                 </div>
-                <div>
+                <div className="w-full sm:w-auto">
                   <label className="field-label">Issued</label>
                   <input
                     className="field-input"
@@ -61,7 +61,7 @@ export async function CertificatesSection({
                     defaultValue={cert.issue_date ?? ""}
                   />
                 </div>
-                <div>
+                <div className="w-full sm:w-auto">
                   <label className="field-label">Expires</label>
                   <input
                     className="field-input"
@@ -70,7 +70,7 @@ export async function CertificatesSection({
                     defaultValue={cert.expiry_date ?? ""}
                   />
                 </div>
-                <div className="flex-1 min-w-[10rem]">
+                <div className="w-full sm:flex-1 sm:min-w-[10rem]">
                   <label className="field-label">
                     {cert.file_path ? "Replace file" : "Upload file"}
                   </label>
@@ -81,10 +81,12 @@ export async function CertificatesSection({
                     accept=".pdf,.jpg,.jpeg,.png"
                   />
                 </div>
-                <button type="submit" className="btn btn-secondary">
-                  Save
-                </button>
-                <StatusBadge status={statusFromDate(cert.expiry_date)} />
+                <div className="flex items-center gap-3">
+                  <button type="submit" className="btn btn-secondary">
+                    Save
+                  </button>
+                  <StatusBadge status={statusFromDate(cert.expiry_date)} />
+                </div>
               </form>
               <div className="flex items-center gap-3">
                 {fileUrl && (
@@ -113,9 +115,9 @@ export async function CertificatesSection({
 
       <form
         action={create}
-        className="flex flex-wrap items-end gap-3 pt-4 border-t border-border"
+        className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-3 pt-4 border-t border-border"
       >
-        <div className="flex-1 min-w-[10rem]">
+        <div className="w-full sm:flex-1 sm:min-w-[10rem]">
           <label className="field-label">New certificate type</label>
           <input
             className="field-input"
@@ -125,19 +127,19 @@ export async function CertificatesSection({
             required
           />
         </div>
-        <div>
+        <div className="w-full sm:w-auto">
           <label className="field-label">Issued</label>
           <input className="field-input" type="date" name="issue_date" />
         </div>
-        <div>
+        <div className="w-full sm:w-auto">
           <label className="field-label">Expires</label>
           <input className="field-input" type="date" name="expiry_date" />
         </div>
-        <div className="flex-1 min-w-[10rem]">
+        <div className="w-full sm:flex-1 sm:min-w-[10rem]">
           <label className="field-label">File (optional)</label>
           <input className="field-input" type="file" name="file" accept=".pdf,.jpg,.jpeg,.png" />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary w-full sm:w-auto">
           Add
         </button>
       </form>

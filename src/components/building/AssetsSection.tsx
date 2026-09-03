@@ -28,10 +28,13 @@ export function AssetsSection({
           return (
             <div
               key={asset.id}
-              className="flex flex-wrap items-end gap-3 border border-border rounded-md p-3"
+              className="flex flex-col gap-2 border border-border rounded-md p-3"
             >
-              <form action={update} className="flex flex-wrap items-end gap-3 flex-1">
-                <div className="flex-1 min-w-[10rem]">
+              <form
+                action={update}
+                className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-3"
+              >
+                <div className="w-full sm:flex-1 sm:min-w-[10rem]">
                   <label className="field-label">Type</label>
                   <input
                     className="field-input"
@@ -41,7 +44,7 @@ export function AssetsSection({
                     required
                   />
                 </div>
-                <div className="flex-1 min-w-[10rem]">
+                <div className="w-full sm:flex-1 sm:min-w-[10rem]">
                   <label className="field-label">Location</label>
                   <input
                     className="field-input"
@@ -49,7 +52,7 @@ export function AssetsSection({
                     defaultValue={asset.location ?? ""}
                   />
                 </div>
-                <div>
+                <div className="w-full sm:w-auto">
                   <label className="field-label">Installed</label>
                   <input
                     className="field-input"
@@ -58,12 +61,12 @@ export function AssetsSection({
                     defaultValue={asset.installed_date ?? ""}
                   />
                 </div>
-                <button type="submit" className="btn btn-secondary">
+                <button type="submit" className="btn btn-secondary w-full sm:w-auto">
                   Save
                 </button>
               </form>
               <form action={remove}>
-                <button type="submit" className="btn btn-danger">
+                <button type="submit" className="btn btn-danger !text-xs">
                   Delete
                 </button>
               </form>
@@ -75,8 +78,11 @@ export function AssetsSection({
         )}
       </div>
 
-      <form action={create} className="flex flex-wrap items-end gap-3 pt-4 border-t border-border">
-        <div className="flex-1 min-w-[10rem]">
+      <form
+        action={create}
+        className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-3 pt-4 border-t border-border"
+      >
+        <div className="w-full sm:flex-1 sm:min-w-[10rem]">
           <label className="field-label">New asset type</label>
           <input
             className="field-input"
@@ -86,15 +92,15 @@ export function AssetsSection({
             required
           />
         </div>
-        <div className="flex-1 min-w-[10rem]">
+        <div className="w-full sm:flex-1 sm:min-w-[10rem]">
           <label className="field-label">Location</label>
           <input className="field-input" name="location" placeholder="Ground floor corridor" />
         </div>
-        <div>
+        <div className="w-full sm:w-auto">
           <label className="field-label">Installed</label>
           <input className="field-input" type="date" name="installed_date" />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary w-full sm:w-auto">
           Add
         </button>
       </form>

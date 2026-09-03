@@ -62,12 +62,15 @@ export function DefectsSection({
         )}
       </div>
 
-      <form action={create} className="flex flex-wrap items-end gap-3 pt-4 border-t border-border">
-        <div className="flex-1 min-w-[10rem]">
+      <form
+        action={create}
+        className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-3 pt-4 border-t border-border"
+      >
+        <div className="w-full sm:flex-1 sm:min-w-[10rem]">
           <label className="field-label">New defect</label>
           <input className="field-input" name="description" placeholder="Describe the defect" required />
         </div>
-        <div>
+        <div className="w-full sm:w-auto">
           <label className="field-label">Severity</label>
           <select className="field-input" name="severity" defaultValue="medium">
             <option value="low">Low</option>
@@ -75,7 +78,7 @@ export function DefectsSection({
             <option value="critical">Critical</option>
           </select>
         </div>
-        <div>
+        <div className="w-full sm:w-auto">
           <label className="field-label">Date raised</label>
           <input
             className="field-input"
@@ -84,7 +87,7 @@ export function DefectsSection({
             defaultValue={new Date().toISOString().slice(0, 10)}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary w-full sm:w-auto">
           Add
         </button>
       </form>
